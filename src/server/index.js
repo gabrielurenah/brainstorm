@@ -6,4 +6,8 @@ const app = express();
 
 connectToDB(MONGO);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get('/', (req, res) => {
+  res.send('Hello World!🌎');
+});
+
+app.listen(PORT, () => console.log(`Your server is 🏃‍♂️💨 on http://0.0.0.0:${PORT}`));
