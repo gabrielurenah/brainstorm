@@ -9,7 +9,7 @@ export default function (mongoDB) {
       useUnifiedTopology: true,
     })
     .then(() => {
-      console.log('Connection Succesful! :D');
+      console.log('Connection Succesful to MongoDB! :D');
     })
     .catch(err => console.log('ERROR', err));
 }
