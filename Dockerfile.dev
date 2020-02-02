@@ -1,13 +1,8 @@
 FROM node:10.16.0
 
-RUN mkdir /srv/brainstorm && chown node:node /srv/brainstorm
+WORKDIR /usr/brainstorm
 
-# node user to avoid running as root and keep the principle of least privilege
-USER node
-
-WORKDIR /srv/brainstorm
-
-COPY --chown=node:node package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
