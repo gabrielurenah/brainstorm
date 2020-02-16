@@ -1,5 +1,10 @@
 import Question, { validateQuestion } from './model';
-import { OK, INTERNAL_SERVER_ERROR, BAD_REQUEST, CREATED } from '../../../config/statusCodes';
+import {
+  OK,
+  INTERNAL_SERVER_ERROR,
+  BAD_REQUEST,
+  CREATED,
+} from '../../../config/statusCodes';
 import wrapper from '../../middlewares/async';
 import publishQuestion from '../../../services/publisher';
 
@@ -23,7 +28,9 @@ const list = async (req, res) => {
  * @returns {JSON} of a Question
  */
 const findById = async (req, res) => {
-  const [error, question] = await wrapper(Question.findOne({ _id: req.params.id }));
+  const [error, question] = await wrapper(
+    Question.findOne({ _id: req.params.id }),
+  );
   return error
     ? res.status(INTERNAL_SERVER_ERROR).json({ error })
     : res.status(OK).json({ question });
@@ -38,9 +45,7 @@ const findById = async (req, res) => {
 const create = async (req, res) => {
   const { error } = validateQuestion(req.body);
   if (error) {
-    return res
-      .status(BAD_REQUEST)
-      .json({ error: error.details[0].message });
+    return res.status(BAD_REQUEST).json({ error: error.details[0].message });
   }
   const question = new Question(req.body);
   const [errorSaving, savedQuestion] = await wrapper(question.save());
@@ -57,9 +62,10 @@ const create = async (req, res) => {
  * @returns Message stating that a Question was published and a status of OK.
  */
 const publish = async (req, res) => {
-  console.log(req.body)
+  const timeItArrived = new Date();
+  publishQuestion({ ...req.body, timeItArrived });
 
-  publishQuestion(req.body.message);
+  console.log({ ...req.body, timeItArrived });
 
   return res.status(OK).send('question sent to subscribers');
 };
