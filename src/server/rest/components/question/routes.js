@@ -1,5 +1,5 @@
 import express from 'express';
-import { list, findById, create, publish } from './controller';
+import { list, findById, create, publish, subscribe } from './controller';
 
 const router = express.Router();
 
@@ -30,5 +30,12 @@ router.post('/', create);
  * @access Public
  */
 router.post('/publish', publish);
+
+/**
+ * @route GET '/publish'
+ * @returns Message stating that the question was send
+ * @access Public
+ */
+router.get('/mq/subscribe', subscribe);
 
 export default router;

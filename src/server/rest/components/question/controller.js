@@ -7,6 +7,7 @@ import {
 } from '../../../config/statusCodes';
 import wrapper from '../../middlewares/async';
 import publishQuestion from '../../../services/publisher';
+import subscribeToChannel from '../../../services/subscriber';
 
 /**
  * List of Question
@@ -62,12 +63,15 @@ const create = async (req, res) => {
  * @returns Message stating that a Question was published and a status of OK.
  */
 const publish = async (req, res) => {
-  const timeItArrived = new Date();
-  publishQuestion({ ...req.body, timeItArrived });
-
-  console.log({ ...req.body, timeItArrived });
+  const sentAt = new Date();
+  publishQuestion({ ...req.body, sentAt });
 
   return res.status(OK).send('question sent to subscribers');
 };
 
-export { list, findById, create, publish };
+const subscribe = async (req, res) => {
+  subscribeToChannel();
+  return res.status(OK).send('its done');
+};
+
+export { list, findById, create, publish, subscribe };
